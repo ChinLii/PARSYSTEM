@@ -8,10 +8,15 @@
         <body>
         <br><br>
                 <main role="main" class="container">
-                        <a href="/system"> back to upload again </a>
-                        <br>
+                        <div class="row">
+                        <h6>Physical Activities Recognition System</h6>
+                        </div>
+                        <div class="row">
+                                <b>Activity : </b> <p id="activity"></p>
+                        </div>
                         <br>
                         <div id="myChart"></div>
+                
                 </main>
         <script>
                 var activitiesList = '<%= activitiesList %>'
@@ -28,33 +33,195 @@
                 for(var i = 0 ; i< timestamp.length; i++){
                         dates.push(moment.unix((timestamp[i])/1000).format("YYYY-MMM-DD HH:mm:ss"))
                 }
-                console.log(activitiesList)
-                console.log(xAxis)
+
+                var myConfig = 
+                {
+                "type": "line",
+                "background-color": "#003849",
+                "utc": true,
+                "title": {
+                        "y": "7px",
+                        "text": "x,y and z axis from mobile sensors",
+                        "background-color": "#003849",
+                        "font-size": "24px",
+                        "font-color": "white",
+                        "height": "25px"
+                },
+                "plotarea": {
+                        "margin": "20% 8% 14% 12%",
+                        "background-color": "#003849"
+                },
+                "legend": {
+                        "layout": "float",
+                        "background-color": "none",
+                        "border-width": 0,
+                        "shadow": 0,
+                        "text-align":"middle",
+                        "offsetY": 35,
+                        "align": "center",
+                        "item": {
+                        "font-color": "#f6f7f8",
+                        "font-size": "14px"
+                        }
+                },
+                "scale-x": {
+                        "labels": dates,
+                        "shadow": 0,
+                        "line-color": "#f6f7f8",
+                        "tick": {
+                        "line-color": "#f6f7f8"
+                        },
+                        "guide": {
+                        "line-color": "#f6f7f8"
+                        },
+                        "item": {
+                        "font-color": "#f6f7f8"
+                        },
+                        "transform": {
+                        "type": "date",
+                        "all": "%D, %d %M<br />%h:%i %A",
+                        "guide": {
+                                "visible": false
+                        },
+                        "item": {
+                                "visible": false
+                        }
+                        },
+                        "label": {
+                        "visible": false
+                        },
+                        "minor-ticks": 0
+                },
+                "scale-y": {
+                        "line-color": "#f6f7f8",
+                        "shadow": 0,
+                        "tick": {
+                        "line-color": "#f6f7f8"
+                        },
+                        "guide": {
+                        "line-color": "#f6f7f8",
+                        "line-style": "dashed"
+                        },
+                        "item": {
+                        "font-color": "#f6f7f8"
+                        },
+                        "label": {
+                        "text": "sensor data",
+                        "font-color": "#f6f7f8"
+                        },
+                        "minor-ticks": 0,
+                        "thousands-separator": ","
+                },
+                "crosshair-x": {
+                        "line-color": "#f6f7f8",
+                        "plot-label": {
+                        "border-radius": "5px",
+                        "border-width": "1px",
+                        "border-color": "#f6f7f8",
+                        "padding": "10px",
+                        "font-weight": "bold"
+                        },
+                        "scale-label": {
+                        "font-color": "#00baf0",
+                        "background-color": "#f6f7f8",
+                        "border-radius": "5px"
+                        }
+                },
+                "tooltip": {
+                        "visible": false
+                },
+                "plot": {
+                        "tooltip-text": "%t views: %v<br>%k",
+                        "shadow": 0,
+                        "line-width": "3px",
+                        "marker": {
+                        "type": "circle",
+                        "size": 3
+                        },
+                        "hover-marker": {
+                        "type": "circle",
+                        "size": 4,
+                        "border-width": "1px"
+                        }
+                },
+                "series": [
+                        {
+                        "values": xAxis,
+                        "text": "x-axis",
+                        "line-color": "#007790",
+                        "legend-marker": {
+                                "type": "circle",
+                                "size": 5,
+                                "background-color": "#007790",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69dbf1"
+                        },
+                        "marker": {
+                                "background-color": "#007790",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69dbf1"
+                        }
+                        },
+                        {
+                        "values": yAxis,
+                        "text": "y-axis",
+                        "line-color": "#009872",
+                        "legend-marker": {
+                                "type": "circle",
+                                "size": 5,
+                                "background-color": "#009872",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69f2d0"
+                        },
+                        "marker": {
+                                "background-color": "#009872",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69f2d0"
+                        }
+                        },
+                        {
+                        "values": zAxis,
+                        "text": "z-axis",
+                        "line-color": "#da534d",
+                        "legend-marker": {
+                                "type": "circle",
+                                "size": 5,
+                                "background-color": "#da534d",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#faa39f"
+                        },
+                        "marker": {
+                                "background-color": "#da534d",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#faa39f"
+                        }
+                        }
+                ]
+                };
                 zingchart.render({
                         id: 'myChart',
-                        data: {
-                                "type": 'line',
-                                "plot":{ 
-                                        "aspect":"segmented" 
-                                },
-                                "scale-x": {
-                                        "values": dates,
-                                        "line-color": "#f6f7f8",
-                                        "step":"4minute",
-                                        "transform": {
-                                        "type":"date",
-                                        "all":"%m/%d/%Y<br>%h:%i:%s:%q %A"
-                                        },
-                                        "item":{
-                                        "font-size":9
-                                        }
-                                },
-                                "series": [
-                                        {"values": xAxis}, 
-                                        {"values": yAxis},
-                                        {"values": zAxis}
-                                ]
-                        }
+                        data: myConfig
+                });
+                zingchart.bind('myChart', 'click', function(e) {
+  
+                        /*
+                        * Returns array of information. 
+                        * xyInformation[0] -> scale-x info 
+                        * xyInformation[1] -> scale-y info 
+                        * xyInformation[2] -> node info
+                        */
+                        var xyInformation = zingchart.exec('myChart', 'getxyinfo', {
+                        x: e.x,
+                        y: e.y
+                });
+                        console.log(xyInformation[2].nodeidx)
+                        $('#activity').text(activitiesList[xyInformation[2].nodeidx])
                 });
                 /*
                 var ctx = document.getElementById('myChart').getContext('2d');
