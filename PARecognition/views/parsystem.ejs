@@ -1,10 +1,117 @@
 <% include ./base/header %>
-        <!-- Body content-->
-        <br><br>
-        <main role="main" class="container">
-                <a href="/system"> back to upload again </a>
 
-        </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+        <!-- Body content-->
+        <body>
+        <br><br>
+                <main role="main" class="container">
+                        <a href="/system"> back to upload again </a>
+                        <br>
+                        <br>
+                        <div id="myChart"></div>
+                </main>
+        <script>
+                var activitiesList = '<%= activitiesList %>'
+                activitiesList = activitiesList.split(',')
+                var timestamp = '<%= timestamp %>'
+                timestamp = timestamp.split(',')
+                var xAxis = '<%= xAxis %>'
+                xAxis = xAxis.split(',')
+                var yAxis = '<%= yAxis %>'
+                yAxis = yAxis.split(',')
+                var zAxis = '<%= zAxis %>'
+                zAxis = zAxis.split(',')
+                var dates = []
+                for(var i = 0 ; i< timestamp.length; i++){
+                        dates.push(moment.unix((timestamp[i])/1000).format("YYYY-MMM-DD HH:mm:ss"))
+                }
+                console.log(activitiesList)
+                console.log(xAxis)
+                zingchart.render({
+                        id: 'myChart',
+                        data: {
+                                "type": 'line',
+                                "plot":{ 
+                                        "aspect":"segmented" 
+                                },
+                                "scale-x": {
+                                        "values": dates,
+                                        "line-color": "#f6f7f8",
+                                        "step":"4minute",
+                                        "transform": {
+                                        "type":"date",
+                                        "all":"%m/%d/%Y<br>%h:%i:%s:%q %A"
+                                        },
+                                        "item":{
+                                        "font-size":9
+                                        }
+                                },
+                                "series": [
+                                        {"values": xAxis}, 
+                                        {"values": yAxis},
+                                        {"values": zAxis}
+                                ]
+                        }
+                });
+                /*
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'line',
+                // The data for our dataset
+                data: {
+                        labels: dates,
+                        datasets: [    
+                        {
+                                label: "x-axis",
+                                backgroundColor: 'rgb(218, 247, 166)',
+                                borderColor: 'rgb(218, 247, 166)',
+                                data: xAxis,
+                        },{
+                                label: "y-axis",
+                                backgroundColor: 'rgb(255, 195, 0)',
+                                borderColor: 'rgb(255, 195, 0)',
+                                data: yAxis,
+                        },{
+                                label: "z-axis",
+                                backgroundColor: 'rgb(255, 87, 51)',
+                                borderColor: 'rgb(255, 87, 51)',
+                                data: zAxis,
+                        }      
+                        ]
+                },
+
+                // Configuration options go here
+                options: {
+                        xAxes: [{
+                                ticks: {
+                                autoSkip: true,
+                                }
+                        }],
+                        pan: {
+                                // Boolean to enable panning
+                                enabled: true,
+                                // Panning directions. Remove the appropriate direction to disable 
+                                // Eg. 'y' would only allow panning in the y direction
+                                mode: 'x'
+                        },
+                                // Container for zoom options
+                        zoom: {
+                                // Boolean to enable zooming
+                                enabled: true,
+                                // Zooming directions. Remove the appropriate direction to disable 
+                                // Eg. 'y' would only allow zooming in the y direction
+                                mode: 'x',
+                        }   
+                }
+                });
+                */
+        
+		
+        </script>
+        
 </body>
-<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <% include ./base/footer %>

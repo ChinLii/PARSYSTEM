@@ -22,14 +22,15 @@ router.get('/system',function(req,res){
 })
 
 router.get('/parsystem',function(req,res){
+    //call get request from python algorithm
     request('http://localhost:8000/list/', function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var result = JSON.parse(body);
             var activitiesList = result["activitiesList"];
             var timestamp = result["time"];
-            var xAxis = result["xAxis"];
-            var yAxis = result["yAxis"];
-            var zAxis = result["zAxis"];
+            var xAxis = result["x-axis"];
+            var yAxis = result["y-axis"];
+            var zAxis = result["z-axis"];
             res.render('parsystem',{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis});
         }
     })
