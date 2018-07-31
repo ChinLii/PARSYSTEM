@@ -3,6 +3,16 @@
         <br><br>
         <main role="main" class="container">
                 <a href="/system"> back to upload again </a>
+
+
         </main>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script>
+        $(document).ready(function(){
+                $.ajax({url: "http://localhost:8000/list/", success: function(result){
+                        console.log(result);
+                }});    
+        })
+</script>
 <% include ./base/footer %>

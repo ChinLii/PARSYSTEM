@@ -3,6 +3,7 @@ var router = express.Router();
 var zerorpc = require("zerorpc");
 var multer = require('multer');
 var fs = require("fs");
+var request = require("request");
 
 var upload = multer({
    dest: '../uploads/'
