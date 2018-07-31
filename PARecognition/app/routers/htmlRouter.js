@@ -22,7 +22,17 @@ router.get('/system',function(req,res){
 })
 
 router.get('/parsystem',function(req,res){
-    res.render('parsystem');
+    request('http://localhost:8000/list/', function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var result = JSON.parse(body);
+            var activitiesList = result["activitiesList"];
+            var timestamp = result["time"];
+            var xAxis = result["xAxis"];
+            var yAxis = result["yAxis"];
+            var zAxis = result["zAxis"];
+            res.render('parsystem',{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis});
+        }
+    })
 })
 
 router.post('/upload',upload.single('file'),function(req,res){
