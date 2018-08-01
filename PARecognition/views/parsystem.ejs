@@ -16,7 +16,15 @@
                         </div>
                         <br>
                         <div id="myChart"></div>
-                
+                        <br><br>
+                        <div class='row'><b>Information detail: </b><br> </div>
+                        <div class='row'>Data from &nbsp; <p id="start"></p>&nbsp; <p>to</p>&nbsp;  <p id="end"></p> </div>
+                        <div class='row'><b>Walking percentage : </b><p id="walking"></p> %</div>
+                        <div class='row'><b>Jogging percentage : </b><p id="jogging"></p> %</div>
+                        <div class='row'><b>Stair percentage : </b><p id="stairs"></p> %</div>
+                        <div class='row'><b>Sitting percentage : </b><p id="sitting"></p> %</div>
+                        <div class='row'><b>Standing percentage : </b><p id="standing"></p> %</div>
+                        <div class='row'><b>LyingDown percentage : </b><p id="LyingDown"></p> %</div>
                 </main>
         <script>
                 var activitiesList = '<%= activitiesList %>'
@@ -33,7 +41,41 @@
                 for(var i = 0 ; i< timestamp.length; i++){
                         dates.push(moment.unix((timestamp[i])/1000).format("YYYY-MMM-DD HH:mm:ss"))
                 }
-
+                var countingWalking = 0
+                var countingStanding = 0
+                var countingJogging = 0
+                var countingSitting = 0
+                var countingStair = 0
+                var countLyingDown = 0
+                for (var i = 0 ;i < activitiesList.length;i++){
+                        if(activitiesList[i] === "Walking"){
+                                countingWalking++
+                        }else if (activitiesList[i] === "Jogging"){
+                                countingJogging++
+                        }else if (activitiesList[i] === "Stairs"){
+                                countingStair++
+                        }else if (activitiesList[i] === "Sitting"){
+                                countingSitting++
+                        }else if (activitiesList[i] === "Standing"){
+                                countingStanding++
+                        }else if (activitiesList[i] === "LyingDown"){
+                                countLyingDown++
+                        }
+                }
+                var percentageWalking = (countingWalking/activitiesList.length) * 100
+                var percentageJogging = (countingJogging/activitiesList.length) * 100
+                var percentageStanding = (countingStanding/activitiesList.length) * 100
+                var percentageSitting = (countingSitting/activitiesList.length) * 100
+                var percentageStair = (countingStair/activitiesList.length) * 100
+                var percentageLyingDown = (countLyingDown/activitiesList.length) * 100
+                $("#walking").text(percentageWalking.toFixed(2).toString())
+                $("#jogging").text(percentageJogging.toFixed(2).toString())
+                $("#stairs").text(percentageStair.toFixed(2).toString())
+                $("#sitting").text(percentageSitting.toFixed(2).toString())
+                $("#standing").text(percentageStanding.toFixed(2).toString())
+                $("#LyingDown").text(percentageLyingDown.toFixed(2).toString())
+                $("#start").text(dates[0])
+                $("#end").text(dates[dates.length-1])
                 var myConfig = 
                 {
                 "type": "line",
@@ -41,7 +83,7 @@
                 "utc": true,
                 "title": {
                         "y": "7px",
-                        "text": "x,y and z axis from mobile sensors",
+                        "text": "x,y and z axis data from mobile sensor",
                         "background-color": "#003849",
                         "font-size": "24px",
                         "font-color": "white",
@@ -220,64 +262,8 @@
                         x: e.x,
                         y: e.y
                 });
-                        console.log(xyInformation[2].nodeidx)
                         $('#activity').text(activitiesList[xyInformation[2].nodeidx])
-                });
-                /*
-                var ctx = document.getElementById('myChart').getContext('2d');
-                var chart = new Chart(ctx, {
-                // The type of chart we want to create
-                type: 'line',
-                // The data for our dataset
-                data: {
-                        labels: dates,
-                        datasets: [    
-                        {
-                                label: "x-axis",
-                                backgroundColor: 'rgb(218, 247, 166)',
-                                borderColor: 'rgb(218, 247, 166)',
-                                data: xAxis,
-                        },{
-                                label: "y-axis",
-                                backgroundColor: 'rgb(255, 195, 0)',
-                                borderColor: 'rgb(255, 195, 0)',
-                                data: yAxis,
-                        },{
-                                label: "z-axis",
-                                backgroundColor: 'rgb(255, 87, 51)',
-                                borderColor: 'rgb(255, 87, 51)',
-                                data: zAxis,
-                        }      
-                        ]
-                },
-
-                // Configuration options go here
-                options: {
-                        xAxes: [{
-                                ticks: {
-                                autoSkip: true,
-                                }
-                        }],
-                        pan: {
-                                // Boolean to enable panning
-                                enabled: true,
-                                // Panning directions. Remove the appropriate direction to disable 
-                                // Eg. 'y' would only allow panning in the y direction
-                                mode: 'x'
-                        },
-                                // Container for zoom options
-                        zoom: {
-                                // Boolean to enable zooming
-                                enabled: true,
-                                // Zooming directions. Remove the appropriate direction to disable 
-                                // Eg. 'y' would only allow zooming in the y direction
-                                mode: 'x',
-                        }   
-                }
-                });
-                */
-        
-		
+                });	
         </script>
         
 </body>
