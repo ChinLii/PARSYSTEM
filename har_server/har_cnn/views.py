@@ -63,7 +63,7 @@ class HarCnn(APIView):
     saver = tf.train.Saver()
     print("Prediction processing")
     with tf.Session() as session:
-        saver.restore(session, "/tmp/model.ckpt")
+        saver.restore(session, "/Users/kananekatichatviwat/Documents/PARSYSTEM/model/model.ckpt")
         result = prediction.eval(feed_dict={X: test_x}, session=session)
 
     prediction_list = []
