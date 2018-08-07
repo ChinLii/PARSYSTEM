@@ -3,7 +3,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var path = require('path');
+var config = require("./config/database");
 
+//setting database
+mongoose.connect(config.url);
 
 //Configuration part 
 var app = new express();
@@ -11,6 +14,7 @@ var port = 3000 || process.env.PORT;
 
 //import router part 
 var htmlRouter = require('./app/routers/htmlRouter');
+var apiRouter = require('./app/routers/apiRouter');
 
 //encoding part 
 app.use(bodyParser()); // get information from html forms
@@ -33,6 +37,7 @@ app.all('*', function (req, res, next) {
     }
   });
 app.use('/',htmlRouter);
+app.use('/api',apiRouter);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 

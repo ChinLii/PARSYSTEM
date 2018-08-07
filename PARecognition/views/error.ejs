@@ -1,0 +1,16 @@
+<% include ./base/header %>
+<br>
+<center>
+    <div class="jumbotron">
+        <h2> Something went wrong </h2>
+        <p><%= message %> </p>
+    </div>
+</center>
+
+<script>
+    setTimeout(function(){
+        window.location.replace("http://localhost:3000/system");
+    }, 5000)
+    
+</script>
+<% include ./base/footer %>
