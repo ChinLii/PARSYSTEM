@@ -18,13 +18,9 @@
                         <div id="myChart"></div>
                         <br><br>
                         <div class='row'><b>Information detail: </b><br> </div>
-                        <div class='row'>Data from &nbsp; <p id="start"></p>&nbsp; <p>to</p>&nbsp;  <p id="end"></p> </div>
-                        <div class='row'><b>Walking percentage : </b><p id="walking"></p> %</div>
-                        <div class='row'><b>Jogging percentage : </b><p id="jogging"></p> %</div>
-                        <div class='row'><b>Stair percentage : </b><p id="stairs"></p> %</div>
-                        <div class='row'><b>Sitting percentage : </b><p id="sitting"></p> %</div>
-                        <div class='row'><b>Standing percentage : </b><p id="standing"></p> %</div>
-                        <div class='row'><b>LyingDown percentage : </b><p id="LyingDown"></p> %</div>
+                        <br><br>
+                        <div id='myPieChart'></div>
+                        
                 </main>
         <script>
                 var activitiesList = '<%= activitiesList %>'
@@ -68,14 +64,97 @@
                 var percentageSitting = (countingSitting/activitiesList.length) * 100
                 var percentageStair = (countingStair/activitiesList.length) * 100
                 var percentageLyingDown = (countLyingDown/activitiesList.length) * 100
-                $("#walking").text(percentageWalking.toFixed(2).toString())
-                $("#jogging").text(percentageJogging.toFixed(2).toString())
-                $("#stairs").text(percentageStair.toFixed(2).toString())
-                $("#sitting").text(percentageSitting.toFixed(2).toString())
-                $("#standing").text(percentageStanding.toFixed(2).toString())
-                $("#LyingDown").text(percentageLyingDown.toFixed(2).toString())
-                $("#start").text(dates[0])
-                $("#end").text(dates[dates.length-1])
+                var myConfig1 = {
+                        type: "pie", 
+                        backgroundColor: "#2B313B",
+                        plot: {
+                        borderColor: "#2B313B",
+                        borderWidth: 5,
+                        // slice: 90,
+                        valueBox: {
+                        placement: 'out',
+                        text: '%t\n%npv%',
+                        fontFamily: "Open Sans"
+                        },
+                        tooltip:{
+                        fontSize: '18',
+                        fontFamily: "Open Sans",
+                        padding: "5 10",
+                        text: "%npv%"
+                        },
+                        animation:{
+                                effect: 2, 
+                                method: 5,
+                                speed: 500,
+                                sequence: 1
+                                }
+                        },
+                        source: {
+                        text: 'gs.statcounter.com',
+                        fontColor: "#8e99a9",
+                        fontFamily: "Open Sans"
+                        },
+                        title: {
+                        fontColor: "#fff",
+                        text: 'Activities frequency',
+                        align: "left",
+                        offsetX: 10,
+                        fontFamily: "Open Sans",
+                        fontSize: 25
+                        },
+                        subtitle: {
+                        offsetX: 10,
+                        offsetY: 10,
+                        fontColor: "#8e99a9",
+                        fontFamily: "Open Sans",
+                        fontSize: "16",
+                        text: dates[0] + " to " + dates[dates.length-1],
+                        align: "left"
+                        },
+                        plotarea: {
+                        margin: "20 0 0 0"  
+                        },
+                        series : [
+                                {
+                                values : [percentageWalking],
+                                text: "Walking",
+                                backgroundColor: '#50ADF5',
+                                },
+                                {
+                                values: [percentageJogging],
+                                text: "Jogging",
+                                backgroundColor: '#FF7965'
+                                },
+                                {
+                                values: [percentageStanding],
+                                text: 'Standing',
+                                backgroundColor: '#FFCB45'
+                                },
+                                {
+                                text: 'Sitting',
+                                values: [percentageSitting],
+                                backgroundColor: '#6877e5'
+                                },
+                                {
+                                text: 'Stair',
+                                values: [percentageStair],
+                                backgroundColor: '#6FB07F'
+                                },
+                                {
+                                text: 'Lying Down',
+                                values: [percentageLyingDown],
+                                backgroundColor: '#FF9300'
+                                }
+                        ]
+                };
+
+                zingchart.render({ 
+                        id : 'myPieChart', 
+                        data : myConfig1, 
+                        height: 500, 
+                        width: 600 
+                });
+
                 var myConfig = 
                 {
                 "type": "line",
