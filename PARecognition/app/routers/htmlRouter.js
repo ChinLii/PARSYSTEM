@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var request = require("request");
 var History = require("../models/history");
-var uuid = require('uuid');
 var fs = require('fs');
+var moment = require('moment');
 
 
 //home page
@@ -20,7 +20,13 @@ router.get('/system',function(req,res){
 })
 //history page
 router.get('/history',function(req,res){
-    res.render('history');
+    History.find({},function(err,result){
+        if(err){
+            res.status(404).send("Database error");
+        }else{
+            res.render('history',{data : result});
+        }
+    })
 })
 
 //create new analyse file
@@ -44,7 +50,7 @@ router.get('/parsystem',function(req,res){
                     var xAxis = result["x-axis"];
                     var yAxis = result["y-axis"];
                     var zAxis = result["z-axis"];
-                    tempHistory.name = uuid.v4();
+                    tempHistory.name = moment().format('MMMM Do YYYY, h:mm:ss a');
                     tempHistory.activitiesList = activitiesList;
                     tempHistory.timestamp = timestamp;
                     tempHistory.xAxis = xAxis;
@@ -67,7 +73,18 @@ router.get('/parsystem',function(req,res){
 })
 //load the database 
 router.get('/load/parsystem/:id',function(req,res){
-
+    History.findOne({"_id":req.params.id},function(err,result){
+        if(err){
+            res.status(404).send("Something went wrong please try again");
+        }else{
+            var activitiesList = result.activitiesList;
+            var timestamp = result.timestamp;
+            var xAxis = result.xAxis;
+            var yAxis = result.yAxis;
+            var zAxis = result.zAxis;
+            res.status(201).render("loadData",{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis,'name':result.name})
+        }
+    })
 })
 
 

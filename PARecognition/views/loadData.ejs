@@ -1,0 +1,352 @@
+<% include ./base/header %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+        <!-- Body content-->
+        <body>
+        <br><br>
+                <main role="main" class="container">
+                        <div class="row">
+                        <h6>Physical Activities Recognition System</h6>
+                        </div>
+                        <div class="row">
+                            <p> Name :  <%= name %>  </p>
+                        </div>
+                        <div class="row">
+                                <b>Activity : </b> <p id="activity"></p>
+                        </div>
+                        <br>
+                        <div id="myChart"></div>
+                        <br><br>
+                        <div class='row'><b>Information detail: </b><br> </div>
+                        <br><br>
+                        <div id='myPieChart'></div>
+                        
+                </main>
+        <script>
+                var activitiesList = '<%= activitiesList %>'
+                activitiesList = activitiesList.split(',')
+                var timestamp = '<%= timestamp %>'
+                timestamp = timestamp.split(',')
+                var xAxis = '<%= xAxis %>'
+                xAxis = xAxis.split(',')
+                var yAxis = '<%= yAxis %>'
+                yAxis = yAxis.split(',')
+                var zAxis = '<%= zAxis %>'
+                zAxis = zAxis.split(',')
+                var dates = []
+                for(var i = 0 ; i< timestamp.length; i++){
+                        dates.push(moment.unix((timestamp[i])/1000).format("YYYY-MMM-DD HH:mm:ss"))
+                }
+                var countingWalking = 0
+                var countingStanding = 0
+                var countingJogging = 0
+                var countingSitting = 0
+                var countingStair = 0
+                var countLyingDown = 0
+                for (var i = 0 ;i < activitiesList.length;i++){
+                        if(activitiesList[i] === "Walking"){
+                                countingWalking++
+                        }else if (activitiesList[i] === "Jogging"){
+                                countingJogging++
+                        }else if (activitiesList[i] === "Stairs"){
+                                countingStair++
+                        }else if (activitiesList[i] === "Sitting"){
+                                countingSitting++
+                        }else if (activitiesList[i] === "Standing"){
+                                countingStanding++
+                        }else if (activitiesList[i] === "LyingDown"){
+                                countLyingDown++
+                        }
+                }
+                var percentageWalking = (countingWalking/activitiesList.length) * 100
+                var percentageJogging = (countingJogging/activitiesList.length) * 100
+                var percentageStanding = (countingStanding/activitiesList.length) * 100
+                var percentageSitting = (countingSitting/activitiesList.length) * 100
+                var percentageStair = (countingStair/activitiesList.length) * 100
+                var percentageLyingDown = (countLyingDown/activitiesList.length) * 100
+                var myConfig1 = {
+                        type: "pie", 
+                        backgroundColor: "#2B313B",
+                        plot: {
+                        borderColor: "#2B313B",
+                        borderWidth: 5,
+                        // slice: 90,
+                        valueBox: {
+                        placement: 'out',
+                        text: '%t\n%npv%',
+                        fontFamily: "Open Sans"
+                        },
+                        tooltip:{
+                        fontSize: '18',
+                        fontFamily: "Open Sans",
+                        padding: "5 10",
+                        text: "%npv%"
+                        },
+                        animation:{
+                                effect: 2, 
+                                method: 5,
+                                speed: 500,
+                                sequence: 1
+                                }
+                        },
+                        source: {
+                        text: 'gs.statcounter.com',
+                        fontColor: "#8e99a9",
+                        fontFamily: "Open Sans"
+                        },
+                        title: {
+                        fontColor: "#fff",
+                        text: 'Activities frequency',
+                        align: "left",
+                        offsetX: 10,
+                        fontFamily: "Open Sans",
+                        fontSize: 25
+                        },
+                        subtitle: {
+                        offsetX: 10,
+                        offsetY: 10,
+                        fontColor: "#8e99a9",
+                        fontFamily: "Open Sans",
+                        fontSize: "16",
+                        text: dates[0] + " to " + dates[dates.length-1],
+                        align: "left"
+                        },
+                        plotarea: {
+                        margin: "20 0 0 0"  
+                        },
+                        series : [
+                                {
+                                values : [percentageWalking],
+                                text: "Walking",
+                                backgroundColor: '#50ADF5',
+                                },
+                                {
+                                values: [percentageJogging],
+                                text: "Jogging",
+                                backgroundColor: '#FF7965'
+                                },
+                                {
+                                values: [percentageStanding],
+                                text: 'Standing',
+                                backgroundColor: '#FFCB45'
+                                },
+                                {
+                                text: 'Sitting',
+                                values: [percentageSitting],
+                                backgroundColor: '#6877e5'
+                                },
+                                {
+                                text: 'Stair',
+                                values: [percentageStair],
+                                backgroundColor: '#6FB07F'
+                                },
+                                {
+                                text: 'Lying Down',
+                                values: [percentageLyingDown],
+                                backgroundColor: '#FF9300'
+                                }
+                        ]
+                };
+
+                zingchart.render({ 
+                        id : 'myPieChart', 
+                        data : myConfig1, 
+                        height: 500, 
+                        width: 600 
+                });
+
+                var myConfig = 
+                {
+                "type": "line",
+                "background-color": "#003849",
+                "utc": true,
+                "title": {
+                        "y": "7px",
+                        "text": "x,y and z axis data from mobile sensor",
+                        "background-color": "#003849",
+                        "font-size": "24px",
+                        "font-color": "white",
+                        "height": "25px"
+                },
+                "plotarea": {
+                        "margin": "20% 8% 14% 12%",
+                        "background-color": "#003849"
+                },
+                "legend": {
+                        "layout": "float",
+                        "background-color": "none",
+                        "border-width": 0,
+                        "shadow": 0,
+                        "text-align":"middle",
+                        "offsetY": 35,
+                        "align": "center",
+                        "item": {
+                        "font-color": "#f6f7f8",
+                        "font-size": "14px"
+                        }
+                },
+                "scale-x": {
+                        "labels": dates,
+                        "shadow": 0,
+                        "line-color": "#f6f7f8",
+                        "tick": {
+                        "line-color": "#f6f7f8"
+                        },
+                        "guide": {
+                        "line-color": "#f6f7f8"
+                        },
+                        "item": {
+                        "font-color": "#f6f7f8"
+                        },
+                        "transform": {
+                        "type": "date",
+                        "all": "%D, %d %M<br />%h:%i %A",
+                        "guide": {
+                                "visible": false
+                        },
+                        "item": {
+                                "visible": false
+                        }
+                        },
+                        "label": {
+                        "visible": false
+                        },
+                        "minor-ticks": 0
+                },
+                "scale-y": {
+                        "line-color": "#f6f7f8",
+                        "shadow": 0,
+                        "tick": {
+                        "line-color": "#f6f7f8"
+                        },
+                        "guide": {
+                        "line-color": "#f6f7f8",
+                        "line-style": "dashed"
+                        },
+                        "item": {
+                        "font-color": "#f6f7f8"
+                        },
+                        "label": {
+                        "text": "sensor data",
+                        "font-color": "#f6f7f8"
+                        },
+                        "minor-ticks": 0,
+                        "thousands-separator": ","
+                },
+                "crosshair-x": {
+                        "line-color": "#f6f7f8",
+                        "plot-label": {
+                        "border-radius": "5px",
+                        "border-width": "1px",
+                        "border-color": "#f6f7f8",
+                        "padding": "10px",
+                        "font-weight": "bold"
+                        },
+                        "scale-label": {
+                        "font-color": "#00baf0",
+                        "background-color": "#f6f7f8",
+                        "border-radius": "5px"
+                        }
+                },
+                "tooltip": {
+                        "visible": false
+                },
+                "plot": {
+                        "tooltip-text": "%t views: %v<br>%k",
+                        "shadow": 0,
+                        "line-width": "3px",
+                        "marker": {
+                        "type": "circle",
+                        "size": 3
+                        },
+                        "hover-marker": {
+                        "type": "circle",
+                        "size": 4,
+                        "border-width": "1px"
+                        }
+                },
+                "series": [
+                        {
+                        "values": xAxis,
+                        "text": "x-axis",
+                        "line-color": "#007790",
+                        "legend-marker": {
+                                "type": "circle",
+                                "size": 5,
+                                "background-color": "#007790",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69dbf1"
+                        },
+                        "marker": {
+                                "background-color": "#007790",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69dbf1"
+                        }
+                        },
+                        {
+                        "values": yAxis,
+                        "text": "y-axis",
+                        "line-color": "#009872",
+                        "legend-marker": {
+                                "type": "circle",
+                                "size": 5,
+                                "background-color": "#009872",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69f2d0"
+                        },
+                        "marker": {
+                                "background-color": "#009872",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#69f2d0"
+                        }
+                        },
+                        {
+                        "values": zAxis,
+                        "text": "z-axis",
+                        "line-color": "#da534d",
+                        "legend-marker": {
+                                "type": "circle",
+                                "size": 5,
+                                "background-color": "#da534d",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#faa39f"
+                        },
+                        "marker": {
+                                "background-color": "#da534d",
+                                "border-width": 1,
+                                "shadow": 0,
+                                "border-color": "#faa39f"
+                        }
+                        }
+                ]
+                };
+                zingchart.render({
+                        id: 'myChart',
+                        data: myConfig
+                });
+                zingchart.bind('myChart', 'click', function(e) {
+  
+                        /*
+                        * Returns array of information. 
+                        * xyInformation[0] -> scale-x info 
+                        * xyInformation[1] -> scale-y info 
+                        * xyInformation[2] -> node info
+                        */
+                        var xyInformation = zingchart.exec('myChart', 'getxyinfo', {
+                        x: e.x,
+                        y: e.y
+                });
+                        $('#activity').text(activitiesList[xyInformation[2].nodeidx])
+                });	
+        </script>
+        
+</body>
+<% include ./base/footer %>
