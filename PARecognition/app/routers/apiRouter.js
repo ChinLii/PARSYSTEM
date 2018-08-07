@@ -16,7 +16,6 @@ router.post('/upload',upload.single('file'),function(req,res){
             res.redirect('/parsystem');
         }
     });
-    //res.status(202).render("error",{message : "The file must be .txt please try again. "});
 })
 
  module.exports = router;

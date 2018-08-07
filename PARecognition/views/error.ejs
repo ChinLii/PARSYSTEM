@@ -8,8 +8,10 @@
 </center>
 
 <script>
+    var redirect = '<%= redirect %>';
+    console.log(redirect);
     setTimeout(function(){
-        window.location.replace("http://localhost:3000/system");
+        window.location.replace("http://localhost:3000/"+redirect);
     }, 5000)
     
 </script>

@@ -22,7 +22,7 @@ router.get('/system',function(req,res){
 router.get('/history',function(req,res){
     History.find({},function(err,result){
         if(err){
-            res.status(404).send("Database error");
+            res.status(404).render("error",{message: "Something went wrong in History database. ", redirect: ""});
         }else{
             res.render('history',{data : result});
         }
@@ -34,7 +34,7 @@ router.get('/parsystem',function(req,res){
     //check the file which have a right content or not 
     fs.readFile('/Users/kananekatichatviwat/Documents/PARSYSTEM/uploads/data.txt',"utf8", function read(err, data) {
         if (err) {
-            res.status(404).render("error",{message : "The file cannot be opened. Please try again."})
+            res.status(404).render("error",{message : "The file cannot be opened. Please try again.",redirect: "system"})
         }
         content = data.split("\n");
         content = content[0];
@@ -58,7 +58,7 @@ router.get('/parsystem',function(req,res){
                     tempHistory.zAxis = zAxis;
                     tempHistory.save(function(err){
                         if(err){
-                            res.status(404).render("error",{message : "Something went wrong in Python server. Please try again later."});
+                            res.status(404).render("error",{message : "Something went wrong in Python server. Please try again later.",redirect: "system"});
                         }else{
                             res.status(200).render('parsystem',{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis})
                         }
@@ -67,7 +67,7 @@ router.get('/parsystem',function(req,res){
             })
             
         }else{
-            res.status(404).render("error",{message : "The file is in the wrong format, please try to upload again"});
+            res.status(404).render("error",{message : "The file is in the wrong format, please try to upload again",redirect: "system"});
         }
     });
 })
@@ -75,7 +75,7 @@ router.get('/parsystem',function(req,res){
 router.get('/load/parsystem/:id',function(req,res){
     History.findOne({"_id":req.params.id},function(err,result){
         if(err){
-            res.status(404).send("Something went wrong please try again");
+            res.status(404).render("error",{message: "Something went wrong in History database. ", redirect: "history"})
         }else{
             var activitiesList = result.activitiesList;
             var timestamp = result.timestamp;
