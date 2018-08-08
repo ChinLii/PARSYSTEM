@@ -20,13 +20,13 @@ router.get('/system',function(req,res){
 })
 //history page
 router.get('/history',function(req,res){
-    History.find({},function(err,result){
+    History.find({},{},{sort: { '_id': -1 }},function(err,result){
         if(err){
             res.status(404).render("error",{message: "Something went wrong in History database. ", redirect: ""});
         }else{
             res.render('history',{data : result});
         }
-    })
+    }).sort({ date: -1 })
 })
 
 //create new analyse file
