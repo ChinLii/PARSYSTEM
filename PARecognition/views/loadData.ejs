@@ -12,7 +12,7 @@
                         <h6>Physical Activities Recognition System</h6>
                         </div>
                         <div class="row">
-                            <p> Name :  <%= name %>  </p>
+                                <p>Name : <%= name %></p>
                         </div>
                         <div class="row">
                                 <b>Activity : </b> <p id="activity"></p>
@@ -22,7 +22,13 @@
                         <br><br>
                         <div class='row'><b>Information detail: </b><br> </div>
                         <br><br>
-                        <div id='myPieChart'></div>
+                        <p>Those numbers will represent the physical activities</p>
+                        <p> 0 = Walking, 1 = Jogging, 2 = Stairs, 3 = Sitting, 4 = Standing, 5 = LyingDown</p>
+                        <div id="myChart2"></div>
+                        <br>
+                        <center><div id='myPieChart'></div></center>
+                        <br><br>
+                        
                         
                 </main>
         <script>
@@ -67,6 +73,36 @@
                 var percentageSitting = (countingSitting/activitiesList.length) * 100
                 var percentageStair = (countingStair/activitiesList.length) * 100
                 var percentageLyingDown = (countLyingDown/activitiesList.length) * 100
+
+                //define physical activity 
+                //0 --> walking
+                //1 --> Jogging
+                //2 --> Stairs
+                //3 --> Sitting
+                //4 --> Standing
+                //5 --> LyingDown
+                var activitesNumbers = [];
+                for(var i = 0;i< activitiesList.length;i++){
+                        if(activitiesList[i] === "Walking"){
+                                activitesNumbers.push(0);
+                        }
+                        if(activitiesList[i] === "Jogging"){
+                                activitesNumbers.push(1);
+                        }
+                        if(activitiesList[i] === "Stairs"){
+                                activitesNumbers.push(2);
+                        }
+                        if(activitiesList[i] === "Sitting"){
+                                activitesNumbers.push(3);
+                        }
+                        if(activitiesList[i] === "Standing"){
+                                activitesNumbers.push(4);
+                        }
+                        if(activitiesList[i] === "LyingDown"){
+                                activitesNumbers.push(5);
+                        }
+                }
+
                 var myConfig1 = {
                         type: "pie", 
                         backgroundColor: "#2B313B",
@@ -156,6 +192,158 @@
                         data : myConfig1, 
                         height: 500, 
                         width: 600 
+                });
+
+                var myConfig2 = {
+                        type: 'line',
+                        backgroundColor:'#2C2C39',
+                        title:{
+                        text:'The Physical activites',
+                        adjustLayout: true,
+                        fontColor:"#E3E3E5",
+                        marginTop: 7
+                        },
+                        legend:{
+                        align: 'center',
+                        verticalAlign: 'top',
+                        backgroundColor:'none',
+                        borderWidth: 0,
+                        item:{
+                        fontColor:'#E3E3E5',
+                        cursor: 'hand'
+                        },
+                        marker:{
+                        type:'circle',
+                        borderWidth: 0,
+                        cursor: 'hand'
+                        }
+                        },
+                        plotarea:{
+                        margin:'dynamic 70'
+                        },
+                        plot:{
+                        aspect: 'spline',
+                        lineWidth: 2,
+                        marker:{
+                        borderWidth: 0,
+                        size: 5
+                        }
+                        },
+                        scaleX:{
+                        labels: dates,
+                        lineColor: '#E3E3E5',
+                        zooming: true,
+                        zoomTo:[0,15],
+                        minValue: dates[0],
+                        step: 'day',
+                        item:{
+                        fontColor:'#E3E3E5'
+                        },
+                        transform:{
+                        type: 'date',
+                        all: '%D %M %d<br>%h:%i:%s'
+                        }
+                        },
+                        scaleY:{
+                        minorTicks: 1,
+                        lineColor: '#E3E3E5',
+                        tick:{
+                        lineColor: '#E3E3E5'
+                        },
+                        minorTick:{
+                        lineColor: '#E3E3E5'
+                        },
+                        minorGuide:{
+                        visible: true,
+                        lineWidth: 1,
+                        lineColor: '#E3E3E5',
+                        alpha: 0.7,
+                        lineStyle: 'dashed'
+                        },
+                        guide:{
+                        lineStyle: 'dashed'
+                        },
+                        item:{
+                        fontColor:'#E3E3E5'
+                        }
+                        },
+                        tooltip:{
+                        borderWidth: 0,
+                        borderRadius: 3
+                        },
+                        preview:{
+                        adjustLayout: true,
+                        borderColor:'#E3E3E5',
+                        mask:{
+                        backgroundColor:'#E3E3E5'
+                        }
+                        },
+                        crosshairX:{
+                        plotLabel:{
+                        multiple: true,
+                        borderRadius: 3
+                        },
+                        scaleLabel:{
+                        backgroundColor:'#53535e',
+                        borderRadius: 3
+                        },
+                        marker:{
+                        size: 7,
+                        alpha: 0.5
+                        }
+                        },
+                        crosshairY:{
+                        lineColor:'#E3E3E5',
+                        type:'multiple',
+                        scaleLabel:{
+                        decimals: 2,
+                        borderRadius: 3,
+                        offsetX: -5,
+                        fontColor:"#2C2C39",
+                        bold: true
+                        }
+                        },
+                        shapes:[
+                        {
+                                type:'rectangle',
+                                id:'view_all',
+                                height:'20px',
+                                width:'75px',
+                                borderColor:'#E3E3E5',
+                                borderWidth:1,
+                                borderRadius: 3,
+                                x:'85%',
+                                y:'11%',
+                                backgroundColor:'#53535e',
+                                cursor:'hand',
+                                label:{
+                                text:'View All',
+                                fontColor:'#E3E3E5',
+                                fontSize:12,
+                                bold:true
+                                }
+                        }
+                        ],
+                        series: [
+                                {
+                                values: activitesNumbers,
+                                lineColor: '#FEB32E',
+                                marker:{
+                                backgroundColor:'#FEB32E'
+                                }
+                                },
+                        ]
+                };
+
+                zingchart.bind('myChart', 'shape_click', function(p){
+                if(p.shapeid == "view_all"){
+                        zingchart.exec(p.id,'viewall');
+                }
+                })
+
+                zingchart.render({ 
+                        id: 'myChart2', 
+                        data: myConfig2, 
                 });
 
                 var myConfig = 
