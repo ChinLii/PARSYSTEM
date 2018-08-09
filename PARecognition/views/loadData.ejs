@@ -22,8 +22,6 @@
                         <br><br>
                         <div class='row'><b>Information detail: </b><br> </div>
                         <br><br>
-                        <p>Those numbers will represent the physical activities</p>
-                        <p> 0 = Walking, 1 = Jogging, 2 = Stairs, 3 = Sitting, 4 = Standing, 5 = LyingDown</p>
                         <div id="myChart2"></div>
                         <br>
                         <center><div id='myPieChart'></div></center>
@@ -74,34 +72,6 @@
                 var percentageStair = (countingStair/activitiesList.length) * 100
                 var percentageLyingDown = (countLyingDown/activitiesList.length) * 100
 
-                //define physical activity 
-                //0 --> walking
-                //1 --> Jogging
-                //2 --> Stairs
-                //3 --> Sitting
-                //4 --> Standing
-                //5 --> LyingDown
-                var activitesNumbers = [];
-                for(var i = 0;i< activitiesList.length;i++){
-                        if(activitiesList[i] === "Walking"){
-                                activitesNumbers.push(0);
-                        }
-                        if(activitiesList[i] === "Jogging"){
-                                activitesNumbers.push(1);
-                        }
-                        if(activitiesList[i] === "Stairs"){
-                                activitesNumbers.push(2);
-                        }
-                        if(activitiesList[i] === "Sitting"){
-                                activitesNumbers.push(3);
-                        }
-                        if(activitiesList[i] === "Standing"){
-                                activitesNumbers.push(4);
-                        }
-                        if(activitiesList[i] === "LyingDown"){
-                                activitesNumbers.push(5);
-                        }
-                }
 
                 var myConfig1 = {
                         type: "pie", 
@@ -326,7 +296,7 @@
                         ],
                         series: [
                                 {
-                                values: activitesNumbers,
+                                values: activitiesList,
                                 lineColor: '#FEB32E',
                                 marker:{
                                 backgroundColor:'#FEB32E'
