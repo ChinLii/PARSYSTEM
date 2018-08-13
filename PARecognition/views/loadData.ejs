@@ -11,9 +11,13 @@
                         <div class="row">
                         <h6>Physical Activities Recognition System</h6>
                         </div>
+                        <br>
                         <div class="row">
-                                <p>Name : <%= name %></p>
+                                <div class="col-md-1"><label> Name:  </label> </div>
+                                <div class="col-md-4"><input type="text" class="form-control" id="name" value="<%=name%>"></div>
+                                <div class="col-md-2"><button onclick="updateName();" class="btn btn-primary">Update</button></div>
                         </div>
+                        <br>
                         <div class="row">
                                 <b>Activity : </b> <p id="activity"></p>
                         </div>
@@ -30,6 +34,23 @@
                         
                 </main>
         <script>
+                function updateName(){
+                        var id = '<%= id %>'
+                        var name = document.getElementById("name").value
+                        var data = {
+                                'id' : id,
+                                'name' : name
+                        }
+                        if (name === "") {
+                                alert("Please fill in all information")
+                        }else{
+                                $.post('/api/updateName/', data, function (response) {
+                                         alert(response.message)
+                                         window.location.replace("/load/parsystem/"+data.id)
+                                })
+                        }
+
+                }
                 var activitiesList = '<%= activitiesList %>'
                 activitiesList = activitiesList.split(',')
                 var timestamp = '<%= timestamp %>'

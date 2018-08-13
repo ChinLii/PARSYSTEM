@@ -82,7 +82,7 @@ router.get('/load/parsystem/:id',function(req,res){
             var xAxis = result.xAxis;
             var yAxis = result.yAxis;
             var zAxis = result.zAxis;
-            res.status(201).render("loadData",{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis,'name':result.name})
+            res.status(201).render("loadData",{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis,'name':result.name,'id': result._id})
         }
     })
 })
