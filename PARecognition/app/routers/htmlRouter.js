@@ -20,13 +20,14 @@ router.get('/system',function(req,res){
 })
 //history page
 router.get('/history',function(req,res){
+    
     History.find({},{},{sort: { '_id': -1 }},function(err,result){
         if(err){
             res.status(404).render("error",{message: "Something went wrong in History database. ", redirect: ""});
         }else{
-            res.render('history',{data : result});
+            res.status(200).render('history',{data : result});
         }
-    }).sort({ date: -1 })
+    }).sort({ date: -1 }) 
 })
 
 //create new analyse file
@@ -50,19 +51,8 @@ router.get('/parsystem',function(req,res){
                     var xAxis = result["x-axis"];
                     var yAxis = result["y-axis"];
                     var zAxis = result["z-axis"];
-                    tempHistory.name = moment().format('MMMM Do YYYY, h:mm:ss a');
-                    tempHistory.activitiesList = activitiesList;
-                    tempHistory.timestamp = timestamp;
-                    tempHistory.xAxis = xAxis;
-                    tempHistory.yAxis = yAxis;
-                    tempHistory.zAxis = zAxis;
-                    tempHistory.save(function(err){
-                        if(err){
-                            res.status(404).render("error",{message : "Something went wrong in Python server. Please try again later.",redirect: "system"});
-                        }else{
-                            res.status(200).render('parsystem',{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis})
-                        }
-                    })
+                    var name = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    res.status(200).render('parsystem',{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis, 'name': name })
                 }
             })
             
@@ -82,7 +72,7 @@ router.get('/load/parsystem/:id',function(req,res){
             var xAxis = result.xAxis;
             var yAxis = result.yAxis;
             var zAxis = result.zAxis;
-            res.status(201).render("loadData",{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis,'name':result.name,'id': result._id})
+            res.status(200).render("loadData",{'activitiesList':activitiesList, 'timestamp': timestamp, 'xAxis':xAxis,'yAxis':yAxis,'zAxis':zAxis,'name':result.name,'id': result._id})
         }
     })
 })

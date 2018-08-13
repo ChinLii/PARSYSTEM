@@ -9,7 +9,12 @@
         <br><br>
                 <main role="main" class="container">
                         <div class="row">
-                        <h6>Physical Activities Recognition System</h6>
+                                <div class="col-md-6">
+                                        <h6>Physical Activities Recognition System</h6>
+                                </div>
+                                <div class="col-md-6" align="right">
+                                        <button onclick="saveHistory();" type="button" class="btn btn-success">Save</button>
+                                </div>
                         </div>
                         <div class="row">
                                 <b>Activity : </b> <p id="activity"></p>
@@ -27,6 +32,26 @@
                         
                 </main>
         <script>
+                function saveHistory(){
+                        var name = '<%= name %>';
+                        var activitiesList = '<%= activitiesList %>'
+                        var timestamp = '<%= timestamp %>'
+                        var xAxis = '<%= xAxis %>'
+                        var yAxis = '<%= yAxis %>'
+                        var zAxis = '<%= zAxis %>'
+                        var data = {
+                                "name" : name,
+                                "activitiesList" : activitiesList,
+                                "timestamp" : timestamp,
+                                "xAxis" : xAxis,
+                                "yAxis" : yAxis,
+                                "zAxis" : zAxis,
+                        }
+                        $.post('/api/save/', data, function (response) {
+                                alert(response.message)
+                        })
+
+                }
                 var activitiesList = '<%= activitiesList %>'
                 activitiesList = activitiesList.split(',')
                 var timestamp = '<%= timestamp %>'

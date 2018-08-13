@@ -1,4 +1,8 @@
 <% include ./base/header %>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css" />
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.js"></script>
 <br>
 <div class="row">
     <div class="col-md-2"></div>
@@ -6,15 +10,36 @@
         <div class="container">
           <h1 class="display-5">Data History</h1>
           <br>
-          <% if (data.length === 0 ) { %>
-            <p>No data</p> 
-         <% } else { %>
-          <% for(var i=0; i < data.length ;i++) { %>
-            <a href="/load/parsystem/<%=data[i]._id%>"> <%= data[i].name %></a><br>
-          <% } }%>
-        
+          <table id="historyTable" class="display" width="100%">
+                <thead>
+                    <tr>
+                        <th width="25%">ID</th>
+                        <th width="25%">Name</th>
+                        <th width="25%">Actions</th>
+                    </tr>
+                </thead>
+                <%  for(var i=0; i< data.length;i++){ %>
+                    <tr>
+                        <td>
+                            <%= data[i]._id %>
+                        </td>
+                        <td>
+                            <%= data[i].name %>
+                        </td>
+                        <td>
+                            
+                            <a href="/load/parsystem/<%= data[i]._id %>"> Edit </a>
+                        </td>
+                <% } %>
+          </table>
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function () {
+  $('#historyTable').DataTable({
+    "order": []
+  });
+});
+</script>
 
-<% include ./base/footer %>

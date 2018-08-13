@@ -9,7 +9,12 @@
         <br><br>
                 <main role="main" class="container">
                         <div class="row">
-                        <h6>Physical Activities Recognition System</h6>
+                                <div class="col-md-6">
+                                        <h6>Physical Activities Recognition System</h6>
+                                </div>
+                                <div class="col-md-6" align="right">
+                                        <button onclick="deleteHistory();" type="button" class="btn btn-danger">Delete</button>
+                                </div>
                         </div>
                         <br>
                         <div class="row">
@@ -34,6 +39,16 @@
                         
                 </main>
         <script>
+                function deleteHistory(){
+                        var id = '<%= id %>';
+                        var data = {
+                                'id' : id
+                        }
+                        $.post('/api/deleteHistory/', data, function (response) {
+                                alert(response.message)
+                                window.location.replace("/history")
+                        })
+                }
                 function updateName(){
                         var id = '<%= id %>'
                         var name = document.getElementById("name").value
