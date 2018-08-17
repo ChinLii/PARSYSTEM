@@ -13,21 +13,16 @@
           <table id="historyTable" class="display" width="100%">
                 <thead>
                     <tr>
-                        <th width="25%">ID</th>
-                        <th width="25%">Name</th>
-                        <th width="25%">Actions</th>
+                        <th width="50%">Name</th>
+                        <th width="50%">Actions</th>
                     </tr>
                 </thead>
                 <%  for(var i=0; i< data.length;i++){ %>
                     <tr>
                         <td>
-                            <%= data[i]._id %>
-                        </td>
-                        <td>
                             <%= data[i].name %>
                         </td>
                         <td>
-                            
                             <a href="/load/parsystem/<%= data[i]._id %>"> Edit </a>
                         </td>
                 <% } %>
@@ -36,10 +31,12 @@
     </div>
 </div>
 <script>
+
 $(document).ready(function () {
   $('#historyTable').DataTable({
     "order": []
   });
 });
+
 </script>
 

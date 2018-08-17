@@ -49,10 +49,14 @@
                         var data = {
                                 'id' : id
                         }
-                        $.post('/api/deleteHistory/', data, function (response) {
-                                alert(response.message)
-                                window.location.replace("/history")
-                        })
+                        var result = confirm("Are you sure that you want to delete ? ");
+                        if(result){
+                                $.post('/api/deleteHistory/', data, function (response) {
+                                        alert(response.message)
+                                        window.location.replace("/history")
+                                })
+                        }
+                        
                 }
                 function updateName(){
                         var id = '<%= id %>'
