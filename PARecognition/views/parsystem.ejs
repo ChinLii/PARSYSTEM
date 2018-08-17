@@ -39,22 +39,27 @@
         <script>
                 function saveHistory(){
                         var name = '<%= name %>';
-                        var activitiesList = '<%= activitiesList %>'
-                        var timestamp = '<%= timestamp %>'
-                        var xAxis = '<%= xAxis %>'
-                        var yAxis = '<%= yAxis %>'
-                        var zAxis = '<%= zAxis %>'
-                        var data = {
-                                "name" : name,
-                                "activitiesList" : activitiesList,
-                                "timestamp" : timestamp,
-                                "xAxis" : xAxis,
-                                "yAxis" : yAxis,
-                                "zAxis" : zAxis,
+                        var confirm = prompt("Please enter history name:", name);
+                        if (confirm){
+                                var activitiesList = '<%= activitiesList %>'
+                                var timestamp = '<%= timestamp %>'
+                                var xAxis = '<%= xAxis %>'
+                                var yAxis = '<%= yAxis %>'
+                                var zAxis = '<%= zAxis %>'
+                                var data = {
+                                        "name" : confirm,
+                                        "activitiesList" : activitiesList,
+                                        "timestamp" : timestamp,
+                                        "xAxis" : xAxis,
+                                        "yAxis" : yAxis,
+                                        "zAxis" : zAxis,
+                                }
+                                $.post('/api/save/', data, function (response) {
+                                        alert(response.message)
+                                })
+                        }else{
+                                alert("Please enter the name of history first");
                         }
-                        $.post('/api/save/', data, function (response) {
-                                alert(response.message)
-                        })
 
                 }
                 var activitiesList = '<%= activitiesList %>'
