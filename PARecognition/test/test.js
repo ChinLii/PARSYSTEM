@@ -14,7 +14,6 @@ global.expect = chai.expect;
 global.should = chai.should();
 
 chai.use(chaiHttp);
-
  /*
   * Test the API request
   */
