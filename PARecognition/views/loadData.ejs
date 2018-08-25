@@ -24,7 +24,11 @@
                         </div>
                         <br>
                         <div class="row">
-                                <b>Activity : </b> <p id="activity"></p>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4" style="border-style: solid;">
+                                       <center> <h4 style="text-decoration: underline;">Activity</h4> <p id="activity"></p></center>
+                                </div>
+                                <div class="col-md-4"></div>
                         </div>
                         <br>
                         <div id="myChart"></div>
@@ -84,6 +88,11 @@
                 var dates = []
                 for(var i = 0 ; i< timestamp.length; i++){
                         dates.push(moment.unix((timestamp[i])/1000).format("YYYY-MMM-DD HH:mm:ss"))
+                }
+                for(var i=0; i<xAxis.length; i++){
+                        xAxis[i] = parseFloat(xAxis[i])
+                        yAxis[i] = parseFloat(yAxis[i])
+                        zAxis[i] = parseFloat(zAxis[i])
                 }
                 var countingWalking = 0
                 var countingStanding = 0
